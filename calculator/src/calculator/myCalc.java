@@ -44,7 +44,7 @@ public class myCalc extends JFrame
 	void buttonMaker(JPanel panel, JButton[] botones)
 	{
 		panel.setLayout(new GridLayout(5, 4, 3, 3));
-		panel.setBackground(Color.cyan);
+		//panel.setBackground(Color.cyan);
 		String asigner[] = {"C", "%", "/", "x^n",
 							"7", "8", "9", "X",
 							"4", "5", "6", "-",
