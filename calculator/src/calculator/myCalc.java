@@ -18,6 +18,7 @@ public class myCalc extends JFrame
 	private double resultado = 0.0;
 	private int counter = 0;
 	private String input = "";
+	
     
 	public myCalc()
 	{
