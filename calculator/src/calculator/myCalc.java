@@ -19,11 +19,12 @@ public class myCalc extends JFrame
 	private int counter = 0;
 	private String input = "";
 	
+	
     
 	public myCalc()
 	{
 		this.setTitle("Calculadora");
-		this.setSize(600, 300);
+		this.setSize(400, 500);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		
@@ -50,7 +51,7 @@ public class myCalc extends JFrame
 							"7", "8", "9", "X",
 							"4", "5", "6", "-",
 							"1", "2", "3", "+",
-							"N/A", "0", ".", "="};
+							"EXIT", "0", ".", "="};
 		botones = new JButton[asigner.length];
 		MyActionListener actionListener = new MyActionListener();
 
@@ -76,48 +77,39 @@ public class myCalc extends JFrame
 	        	input = "";
 	        	texto.setText("");
 	        	break;
-	        case "N/A":
+	        case "EXIT":
+	        	System.exit(0);
 	        	break;
 	        default:
-	        	if (!isSymbol(press.charAt(0)))
+	        	if (!isSpecial(press.charAt(0)) && !isSymbol(press.charAt(0)))
 	        	{
-	        		if (!IsSpecial(press.charAt(0)))
-	        		{
-	        			if (counter == 0 || counter == 2)
-	        			{
-			        		input = input.concat(press);
-							texto.setText(input + " ");
-							counter++;
-				        	input = input.concat(" ");
-	        			}
-	        		}
+	        		//if (input.charAt(input.length()-1) == '.' && press == ".")
+	        		input = input.concat(press);
+	        		texto.setText(input);
+	        		counter = 1;
 	        	}
-	        	else
+	        	else if (isSymbol(press.charAt(0)) && counter != 0 && !isSpecial(press.charAt(0)))
 	        	{
-	        		if (isSymbol(press.charAt(0)))
+	        		input = input.concat(" " + press + " ");
+	        		texto.setText(input + " ");
+	        		counter = 0;
+	        	}
+	        	else if (isSpecial(press.charAt(0)))
+	        	{
+	        		String tmp[] = input.split(" ");
+	        		for(int i = 0; i < tmp.length; i += 3)
 	        		{
-	        			if (counter == 1)
-	        			{
-			        		if (press != "x^n")
-				        		input = input.concat(press);
-			        		else
-			        			input = input.concat("^");
-		        			texto.setText(input + " ");
-			        		counter++;
-				        	input = input.concat(" ");
-	        			}
+	        			if (resultado != 0)
+	        				resultado = calculate(resultado+"", tmp[i], tmp[i+1]);
+	        			else
+	        				resultado = calculate(tmp[i], tmp[i+1], tmp[i+2]);
+	        			System.out.println(resultado);
 	        		}
+	        		texto.setText(input +" = " + resultado);
+		        	counter = 0;
+		        	input = "";
 	        	}
 	        	break;
-	        }
-	        
-	        if (counter == 3)
-	        {
-	        	String tmp[] = input.split(" ");
-	        	resultado = calculate (tmp[0], tmp[1], tmp[2]);
-	        	texto.setText(input +" = " + resultado);
-	        	counter = 0;
-	        	input = "";
 	        }
 	    }
 	}
@@ -149,9 +141,9 @@ public class myCalc extends JFrame
 		return res;
 	}
 	
-	public boolean IsSpecial(char c)
+	public boolean isSpecial(char c)
 	{
-		if (c == '.' || c == '=')
+		if (c == '=')
 			return true;
 		return false;
 	}
